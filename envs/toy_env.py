@@ -105,3 +105,35 @@ class ToyEnv(gym.Env):
         return next_state, reward, done, {}
 
 
+    # ---- Hooks for PSRL / GaussianBelief ----
+    def set_params(self, theta):
+        """Apply parameter vector θ to the toy dynamics.
+        θ corresponds to the per-dimension inertia (same shape as action/state: 2,).
+        """
+        theta = np.asarray(theta, dtype=float).reshape(-1)
+        if theta.size != 2:
+            raise ValueError(f"theta must have size 2 for ToyEnv, got {theta.size}")
+        self.cur_inertia = theta.copy()
+
+    def forward_model(self, s, a, theta):
+        """Predict next state for (s, a, θ) without mutating the live env.
+        This toy model is deterministic given θ (we omit env noise here):
+            f(s,a,θ) = s + a * θ
+        """
+        s = np.asarray(s, dtype=float).reshape(-1)
+        a = np.asarray(a, dtype=float).reshape(-1)
+        theta = np.asarray(theta, dtype=float).reshape(-1)
+        if s.size != 2 or a.size != 2 or theta.size != 2:
+            raise ValueError("ToyEnv expects 2D s, a, and theta")
+        return s + a * theta
+
+    def jacobian(self, s, a, theta):
+        """Return ∂f/∂θ(s,a,θ) as a (d_state x d_theta) matrix.
+        For f(s,a,θ) = s + a * θ (elementwise), J = diag(a).
+        """
+        a = np.asarray(a, dtype=float).reshape(-1)
+        if a.size != 2:
+            raise ValueError("ToyEnv expects 2D action for jacobian")
+        return np.diag(a)
+
+

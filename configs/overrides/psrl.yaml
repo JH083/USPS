@@ -1,0 +1,11 @@
+agent:
+  params:
+    psrl_gamma: 0.99 # resample with prob 1 - gamma
+    belief_update_every: 2000 # env steps
+    belief_batch_size: 1024
+
+    belief:
+      mu0: [???, ???] # set to env’s parameter means
+      Sigma0_diag: [1.0, 1.0]
+      sigma2: 1e-3
+      jitter: 1e-6

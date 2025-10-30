@@ -10,11 +10,16 @@ import sys
 import time
 import pickle as pkl
 
-from logger import Logger
-from replay_buffer import ReplayBuffer
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from infra.logger import Logger
+from infra.replay_buffer import ReplayBuffer
 import infra.utils as utils
 
 import hydra
+from agent.belief import GaussianBelief
 
 class Workspace(object):
     def __init__(self, cfg):
@@ -47,6 +52,31 @@ class Workspace(object):
                                           self.device)
 
         self.step = 0
+
+        # ---- Minimal PSRL / Belief wiring (uses defaults if not in config) ----
+        # Read PSRL/belief params from cfg.agent.params when present; otherwise use safe defaults
+        params = getattr(cfg.agent, 'params', cfg.agent)
+        self.psrl_gamma = float(getattr(params, 'psrl_gamma', 0.99))
+        self.belief_update_every = int(getattr(params, 'belief_update_every', 2000))
+        self.belief_batch_size = int(getattr(params, 'belief_batch_size', 1024))
+
+        belief_cfg = getattr(params, 'belief', None)
+        if belief_cfg is not None:
+            mu0 = np.array(getattr(belief_cfg, 'mu0', [0.0, 0.0]), dtype=float)
+            Sigma0_diag = np.array(getattr(belief_cfg, 'Sigma0_diag', [1.0, 1.0]), dtype=float)
+            Sigma0 = np.diag(Sigma0_diag)
+            sigma2 = float(getattr(belief_cfg, 'sigma2', 1e-3))
+            jitter = float(getattr(belief_cfg, 'jitter', 1e-6))
+        else:
+            # Minimal, safe default: 2D θ prior; adjust via overrides without touching sac.yaml
+            mu0 = np.zeros(2, dtype=float)
+            Sigma0 = np.eye(2, dtype=float)
+            sigma2 = 1e-3
+            jitter = 1e-6
+
+        self.belief = GaussianBelief(mu0, Sigma0, sigma2=sigma2, jitter=jitter)
+        self._psrl_theta = None
+        self._steps_since_belief = 0
 
     def evaluate(self):
         average_episode_reward = 0
@@ -94,6 +124,19 @@ class Workspace(object):
                 self.logger.log('train/episode', episode, self.step)
                 
 
+                # ---- Continuing-PSRL resample gate (Bernoulli survival) ----
+                # Resample θ with probability (1 - psrl_gamma), or on first use
+                survive = (np.random.rand() < self.psrl_gamma)
+                if (not survive) or (self._psrl_theta is None):
+                    self._psrl_theta = self.belief.sample_theta()
+                    # Apply parameters to env if supported
+                    if hasattr(self.env, 'set_params'):
+                        try:
+                            self.env.set_params(self._psrl_theta)
+                        except Exception:
+                            pass
+
+
             # sample action for data collection
             if self.step < self.cfg.num_random_steps:
                 action = self.env.action_space.sample()
@@ -119,6 +162,36 @@ class Workspace(object):
             episode_step += 1
             self.step += 1
 
+            # ---- Periodic belief update (if env and buffer support it) ----
+            self._steps_since_belief += 1
+            if self._steps_since_belief >= self.belief_update_every:
+                # Only run if env supplies forward model and jacobian, and buffer can sample
+                if hasattr(self.env, 'forward_model') and hasattr(self.env, 'jacobian') and hasattr(self.replay_buffer, 'sample'):
+                    try:
+                        batch = self.replay_buffer.sample(self.belief_batch_size)
+                        # Try common batch formats
+                        triples = []
+                        if isinstance(batch, dict) and all(k in batch for k in ('obs', 'action', 'next_obs')):
+                            for o, a, no in zip(batch['obs'], batch['action'], batch['next_obs']):
+                                triples.append((o, a, no))
+                        elif isinstance(batch, (list, tuple)):
+                            # e.g., list of namedtuples with fields obs, action, next_obs
+                            for b in batch:
+                                o = getattr(b, 'obs', None)
+                                a = getattr(b, 'action', None)
+                                no = getattr(b, 'next_obs', None)
+                                if o is not None and a is not None and no is not None:
+                                    triples.append((o, a, no))
+                        if len(triples) > 0:
+                            self.belief.update(triples,
+                                               f=self.env.forward_model,
+                                               jacobian=self.env.jacobian,
+                                               theta_lin=self.belief.mu)
+                    except Exception:
+                        # Keep training even if belief update fails early
+                        pass
+                self._steps_since_belief = 0
+
             # evaluate agent periodically
             if self.step > 0 and self.step % self.cfg.eval_frequency == 0:
                 print(f"Evaluating at {self.step}...")
@@ -130,7 +203,7 @@ class Workspace(object):
                 print(f"Ending...")
 
 
-@hydra.main(config_path='configs/train.yaml', strict=True)
+@hydra.main(version_base=None, config_path="../configs", config_name="train")
 def main(cfg):
     workspace = Workspace(cfg)
     workspace.run()
