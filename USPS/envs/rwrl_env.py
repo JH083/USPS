@@ -6,6 +6,22 @@ Convert Realworld RL Env to Gym Env
 
 
 import numpy as np
+# Workaround for MuJoCo version mismatch: monkey-patch dm_control's version check
+import dm_control.mujoco.wrapper.core as mujoco_core
+_original_version_check = mujoco_core._check_version
+def _patched_version_check(lib_handle):
+    """Patched version check that ignores 210/211 mismatch."""
+    try:
+        return _original_version_check(lib_handle)
+    except mujoco_core.Error as e:
+        if "does not match header version" in str(e) and "210" in str(e) and "211" in str(e):
+            # Ignore version mismatch between 210 and 211
+            import warnings
+            warnings.warn("Ignoring MuJoCo version mismatch (210/211) - using library anyway")
+            return
+        raise
+mujoco_core._check_version = _patched_version_check
+
 import dm2gym.envs.dm_suite_env as dm2gym
 
 import realworldrl_suite.environments as rwrl
