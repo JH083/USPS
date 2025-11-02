@@ -130,7 +130,7 @@ class Workspace(object):
                 print(f"Ending...")
 
 
-@hydra.main(config_path='configs/train.yaml', strict=True)
+@hydra.main(config_path='../configs/train.yaml', strict=True)
 def main(cfg):
     workspace = Workspace(cfg)
     workspace.run()

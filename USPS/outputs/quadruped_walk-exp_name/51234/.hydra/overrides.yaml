@@ -1,0 +1,5 @@
+- overrides=quadruped_walk
+- seed=51234
+- agent.params.robust_method=l2_adv_param
+- agent.params.robust_coef=5e-4
+- experiment=exp_name

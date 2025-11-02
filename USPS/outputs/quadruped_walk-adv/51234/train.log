@@ -1,0 +1,14 @@
+[2025-11-02 15:41:28,533][absl][INFO] - MUJOCO_GL=osmesa, attempting to import specified OpenGL backend.
+[2025-11-02 15:41:28,543][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : ('Unable to load OpenGL library', "dlopen(OSMesa, 0x000A): tried: 'OSMesa' (no such file), '/System/Volumes/Preboot/Cryptexes/OSOSMesa' (no such file), '/opt/miniconda3/envs/usps-py38/lib/python3.8/lib-dynload/../../OSMesa' (no such file), '/opt/miniconda3/envs/usps-py38/bin/../lib/OSMesa' (no such file), '/usr/lib/OSMesa' (no such file, not in dyld cache), 'OSMesa' (no such file), '/usr/local/lib/OSMesa' (no such file), '/usr/lib/OSMesa' (no such file, not in dyld cache)", 'OSMesa', None)
+[2025-11-02 15:41:35,023][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
+[2025-11-02 15:41:35,771][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:41:35,774][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : MuJoCo library version (210) does not match header version (211)
+[2025-11-02 15:41:46,445][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
+[2025-11-02 15:41:46,698][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:41:46,699][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : MuJoCo library version (210) does not match header version (211)
+[2025-11-02 15:42:19,981][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
+[2025-11-02 15:42:20,236][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:42:20,236][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : MuJoCo library version (210) does not match header version (211)
+[2025-11-02 15:42:33,209][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
+[2025-11-02 15:42:33,537][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:42:33,538][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : MuJoCo library version (210) does not match header version (211)
