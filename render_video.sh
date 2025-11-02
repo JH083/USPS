@@ -36,7 +36,7 @@ for seed in 12345; do
     cuda_id=$(($cuda_id+1))
     exp_dir=$base_dir/$seed 
     for ((i=0; i<${length}; i++));do
-         python video.py \
+         python python_scripts/video.py \
              --experiments_dir ${exp_dir} \
              --agent_dir ${exp_dir} \
              --num_steps 100 \

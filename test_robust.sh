@@ -37,7 +37,7 @@ for seed in 12345 23451 34512 45123 51234; do
     cuda_id=$(($cuda_id+1))
     exp_dir=$base_dir/$seed 
     for ((i=0; i<${length}; i++));do
-         python test.py \
+         python python_scripts/test.py \
              --experiments_dir ${exp_dir} \
              --agent_dir ${exp_dir} \
              --num_steps 1000 \

@@ -1,6 +1,6 @@
 agent:
   name: sac
-  class: agents.sac.SACAgent
+  class: agent.agent.SACAgent
   params:
     obs_dim: ??? # to be specified later
     action_dim: ??? # to be specified later
@@ -25,7 +25,7 @@ agent:
     robust_coef: 0.1
     
 double_q_critic:
-  class: agents.critic.DoubleQCritic
+  class: agent.critic.DoubleQCritic
   params:
     obs_dim: ${agent.params.obs_dim}
     action_dim: ${agent.params.action_dim}
@@ -33,7 +33,7 @@ double_q_critic:
     hidden_depth: 2
     
 diag_gaussian_actor:
-  class: agents.actor.DiagGaussianActor
+  class: agent.actor.DiagGaussianActor
   params:
     obs_dim: ${agent.params.obs_dim}
     action_dim: ${agent.params.action_dim}

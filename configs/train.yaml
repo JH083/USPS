@@ -1,5 +1,5 @@
 defaults:
-    - agent: sac
+    - agent: agent
     - overrides: cartpole_swingup
 
 seed: 1

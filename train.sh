@@ -19,7 +19,7 @@ for seed in 12345 23451 34512 45123 51234; do
     export CUDA_VISIBLE_DEVICES=${cuda_id}
     cuda_id=$(($cuda_id+1))
     # train
-    python train.py \
+    python python_scripts/train.py \
         overrides=${overrides} \
         seed=${seed} \
         agent.params.robust_method=${robust_method} \

@@ -10,8 +10,8 @@ import sys
 import time
 import pickle as pkl
 
-from logger import Logger
-from replay_buffer import ReplayBuffer
+from infra.logger import Logger
+from infra.replay_buffer import ReplayBuffer
 import infra.utils as utils
 
 import hydra
