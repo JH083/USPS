@@ -1,6 +1,6 @@
 - overrides=quadruped_walk
 - seed=12345
-- device=cpu
+- device=cuda:0
 - agent.params.robust_method=l2_adv_param
 - agent.params.robust_coef=5e-4
 - experiment=adv

@@ -33,3 +33,9 @@
 [2025-11-02 15:45:17,195][absl][INFO] - MuJoCo library version is: 211
 [2025-11-02 15:46:05,336][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
 [2025-11-02 15:46:05,998][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:54:29,521][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:04:31,108][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:05:36,440][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:08:56,059][absl][INFO] - MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+[2025-11-02 16:08:56,079][OpenGL.acceleratesupport][INFO] - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[2025-11-02 16:08:56,191][absl][INFO] - MuJoCo library version is: 210

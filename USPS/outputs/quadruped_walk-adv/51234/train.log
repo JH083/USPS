@@ -33,3 +33,10 @@
 [2025-11-02 15:45:17,195][absl][INFO] - MuJoCo library version is: 211
 [2025-11-02 15:46:05,304][absl][INFO] - MUJOCO_GL=glfw, attempting to import specified OpenGL backend.
 [2025-11-02 15:46:06,002][absl][INFO] - MuJoCo library version is: 211
+[2025-11-02 15:54:29,481][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:04:31,038][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:05:36,375][hydra.utils][ERROR] - Error instantiating envs.rwrl_env.RWRLEnv : No module named 'envs'
+[2025-11-02 16:08:55,946][absl][INFO] - MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+[2025-11-02 16:08:55,951][OpenGL.acceleratesupport][INFO] - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[2025-11-02 16:08:56,034][absl][INFO] - MuJoCo library version is: 210
+[2025-11-02 16:08:59,086][hydra.utils][ERROR] - Error instantiating agent.agent.SACAgent : No CUDA GPUs are available

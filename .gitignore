@@ -1,0 +1,30 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Hydra output directories
+**/.hydra/
+**/outputs/
+**/logs/
+
+# TensorBoard event files
+*.tfevents.*
+
+# CSV, log, and temporary run files
+*.csv
+*.log
+
+# Build and egg metadata
+*.egg-info/
+*.egg
+**/build/
+**/dist/
+
+# Python virtual environments
+venv/
+.env/
+
+# OS-specific files
+.DS_Store
+Thumbs.db

@@ -9,6 +9,15 @@ import os
 import sys
 import time
 import pickle as pkl
+from pathlib import Path
+
+# Ensure the repository root is on sys.path so local packages like `envs` can be
+# imported even after Hydra changes the working directory at runtime.
+# `train.py` lives at <repo>/python_scripts/train.py, so go two levels up.
+repo_root = Path(__file__).resolve().parents[1]
+repo_root_str = str(repo_root)
+if repo_root_str not in sys.path:
+    sys.path.insert(0, repo_root_str)
 
 from USPS.infra.logger import Logger
 from USPS.infra.replay_buffer import ReplayBuffer

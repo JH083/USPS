@@ -29,7 +29,7 @@ agent:
     obs_dim: ???
     robust_coef: 0.0005
     robust_method: l2_adv_param
-device: cpu
+device: cuda:0
 diag_gaussian_actor:
   class: agent.actor.DiagGaussianActor
   params:

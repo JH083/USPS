@@ -79,7 +79,7 @@ hydra:
     id: ???
     name: train
     num: ???
-    override_dirname: agent.params.robust_coef=5e-4,agent.params.robust_method=l2_adv_param,device=cpu,experiment=adv,overrides=quadruped_walk,seed=51234
+    override_dirname: agent.params.robust_coef=5e-4,agent.params.robust_method=l2_adv_param,device=cuda:0,experiment=adv,overrides=quadruped_walk,seed=51234
   job_logging:
     disable_existing_loggers: false
     formatters:
@@ -108,14 +108,14 @@ hydra:
     task:
     - overrides=quadruped_walk
     - seed=51234
-    - device=cpu
+    - device=cuda:0
     - agent.params.robust_method=l2_adv_param
     - agent.params.robust_coef=5e-4
     - experiment=adv
   run:
     dir: ${root_dir}/${env.name}-${experiment}/${seed}
   runtime:
-    cwd: /Users/ishayu/Documents/robot learning/USPS/USPS
+    cwd: /home/hew2/USPS/USPS
     version: 0.11.3
   sweep:
     dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
