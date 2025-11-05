@@ -1,4 +1,4 @@
-torch==1.10.1
+# torch==1.10.1
 dm-control==0.0.403778684
 dm2gym==0.2.0
 opencv-python==4.5.5.62
